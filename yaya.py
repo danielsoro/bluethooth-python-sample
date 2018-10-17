@@ -1,5 +1,6 @@
 # simple inquiry example
 import bluetooth
+import mysql.connector
 
 nearby_devices = bluetooth.discover_devices(lookup_names=True)
 print("found %d devices" % len(nearby_devices))
@@ -16,6 +17,25 @@ print("Conectando em %s" % cortina)
 sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 sock.connect((cortina, 1))
 
+mydb = mysql.connector.connect(
+  host="172.17.0.2",
+  user="root",
+  passwd="my-secret-pw",
+  database="yaya"
+)
+
+
+print("Conectado em %s" % mydb)
+mycursor = mydb.cursor()
+
 while True:
+    print("Esperando dado para ser salvo")
     data = sock.recv(1024)
-    print("Data received:", str(data))
+    data_para_ser_salvo = str(data)
+    print("Dado recebido via bluethooth %s" % data_para_ser_salvo)
+
+    sql = "INSERT INTO Luz VALUES ('%s');" % data_para_ser_salvo
+    mycursor.execute(sql)
+    mydb.commit()
+    print(mycursor.rowcount, "record inserted.")
+
