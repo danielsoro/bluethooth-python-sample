@@ -1,0 +1,16 @@
+Habilitando bluethooth para se conectar com python
+
+pacman -S bluez bluez-utils
+systemctl start bluethooth
+
+# bluetoothctl
+[bluetooth]# power on
+[bluetooth]# default-agent
+[bluetooth]# pairable on
+[bluetooth]# scan on
+[bluetooth]# pair ${device_address}
+[bluetooth]# trust 01:02:03:04:05:06
+[bluetooth]# connect ${device_address}
+
+pip2 install pybluez
+python2 yaya.py
