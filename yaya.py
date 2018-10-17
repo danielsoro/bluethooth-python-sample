@@ -32,10 +32,11 @@ while True:
     print("Esperando dado para ser salvo")
     data = sock.recv(1024)
     data_para_ser_salvo = str(data)
-    print("Dado recebido via bluethooth %s" % data_para_ser_salvo)
+    print("Dado recebido via bluethooth foi: %s" % data_para_ser_salvo)
 
-    sql = "INSERT INTO Luz VALUES ('%s');" % data_para_ser_salvo
-    mycursor.execute(sql)
+    mycursor.execute("INSERT INTO Luz VALUES ('%s');" % data_para_ser_salvo)
     mydb.commit()
     print(mycursor.rowcount, "record inserted.")
+
+    mycursor.execute("SELECT * FROM Luz")
 
